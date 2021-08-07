@@ -1,0 +1,351 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "description": "This is a sample server Petstore server.  You can find out more about Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).  For this sample, you can use the api key `special-key` to test the authorization filters.",
+      "version": "1.0.0",
+      "title": "Swagger Test inapps",
+      "termsOfService": "http://swagger.io/terms/",
+      "contact": {
+        "email": "apiteam@swagger.io"
+      },
+      "license": {
+        "name": "Apache 2.0",
+        "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+      }
+    },
+    "host": "none",
+    "basePath": "/v2",
+    "tags": [
+      {
+        "name": "Auth",
+        "description": "Operations about Auth",
+        "externalDocs": {
+          "description": "Find out more about our system",
+          "url": "http://swagger.io"
+        }
+      },
+      {
+        "name": "Admin",
+        "description": "Operations about admin",
+        "externalDocs": {
+          "description": "Find out more about our system",
+          "url": "http://swagger.io"
+        }
+      },
+      {
+        "name": "Supervisor",
+        "description": "Operations about supervisor",
+        "externalDocs": {
+          "description": "Find out more about our system",
+          "url": "http://swagger.io"
+        }
+      }
+    ],
+    "schemes": [
+      "https",
+      "http"
+    ],
+    "paths": {
+      "/api/auth/login": {
+        "post": {
+          "tags": [
+            "Auth"
+          ],
+          "summary": "Logs in user into the system",
+          "description": "",
+          "operationId": "loginUser",
+          "produces": [
+            "application/json",
+            "application/xml"
+          ],
+          "parameters": [
+            {
+              "name": "phone",
+              "in": "body",
+              "description": "The phone for login",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "password",
+              "in": "body",
+              "description": "The password for login in clear text",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "400": {
+              "description": "login failed"
+            },
+            "200": {
+              "description": "Login success"
+            }
+          }
+        }
+      },
+      "/api/auth/register": {
+        "post": {
+          "tags": [
+            "Auth"
+          ],
+          "summary": "Register user",
+          "description": "This can only be done by the logged in user.",
+          "operationId": "createUser",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json",
+            "application/xml"
+          ],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Created user object",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/Buyer"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "successful register"
+            },
+            "400": {
+              "description": "phone register is exist"
+            },
+            "500": {
+              "description": "register failed"
+            }
+          }
+        }
+      },
+      "/api/admin/susspendUser": {
+        "post": {
+          "tags": [
+            "Admin"
+          ],
+          "summary": "suspenduser",
+          "description": "This can only be done by the logged in admin.",
+          "operationId": "suspenduser",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json",
+            "application/xml"
+          ],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "id",
+              "description": "create admin object",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "suspend user success",
+              "schema":
+              {
+                "type": "object",
+              "properties": {
+                "qrUrl":{
+                "type": "string"}
+              }
+              }
+            },
+            "300": {
+              "description": "cant find user with id"
+            }
+          }
+        }
+      },
+      "/api/admin/upgradeUser": {
+        "post": {
+          "tags": [
+            "Admin"
+          ],
+          "summary": "login factor 1 into system",
+          "description": "This can only be done with email and password correct.",
+          "operationId": "login admin",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json",
+            "application/xml"
+          ],
+          "parameters": [
+            {
+              "name": "email",
+              "in": "query",
+              "description": "The email for login",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "password",
+              "in": "query",
+              "description": "The password for login in clear text",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "success create admin",
+              "schema":
+              {
+                "type": "object",
+              "properties": {
+                "id":{
+                "type": "string"}
+              }
+              }
+            },
+            "400": {
+              "description": "unauthorized"
+            }
+          }
+        }
+      },
+      "/api/supervisor/upgradeRole": {
+        "post": {
+          "tags": [
+            "Supervisor"
+          ],
+          "summary": "upgrade role from supervisor",
+          "description": "This can only be done by supervisor role.",
+          "operationId": "upgrade role",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json",
+            "application/xml"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "body",
+              "description": "Id from user",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "role",
+              "in": "query",
+              "description": "role want to update",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "verify success"
+            },
+            "300": {
+              "description": "cant find user with id"
+            }
+          }
+        }
+      },
+      "/api/supervisor/listProfile": {
+        "get": {
+          "tags": [
+            "Supervisor"
+          ],
+          "summary": "view all user ",
+          "description": "This can only be done by supervisor role.",
+          "operationId": "view all user",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json",
+            "application/xml"
+          ],
+          "parameters": [
+          ],
+          "responses": {
+            "200": {
+              "description": "get list user success"
+            }
+          }
+        }
+      },
+      "/api/supervisor/viewProfile": {
+        "get": {
+          "tags": [
+            "Supervisor"
+          ],
+          "summary": "view profile of user ",
+          "description": "This can only be done by supervisor role.",
+          "operationId": "view profile user",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json",
+            "application/xml"
+          ],
+          "parameters": [
+            {
+                "name": "id",
+                "in": "query",
+                "description": "Id from user",
+                "required": true,
+                "type": "string"
+              }
+          ],
+          "responses": {
+            "200": {
+              "description": "get list user success"
+            }
+          }
+        }
+      }
+      
+    },
+    "securityDefinitions": {
+      "api_key": {
+        "type": "apiKey",
+        "name": "api_key",
+        "in": "header"
+      },
+      "petstore_auth": {
+        "type": "oauth2",
+        "authorizationUrl": "https://petstore.swagger.io/oauth/authorize",
+        "flow": "implicit",
+        "scopes": {
+          "read:pets": "read your pets",
+          "write:pets": "modify pets in your account"
+        }
+      }
+    },
+    "definitions": {
+      "ApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "externalDocs": {
+      "description": "Find out more about Swagger",
+      "url": "http://swagger.io"
+    }
+  }
